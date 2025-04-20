@@ -1,6 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.routes import api_router
+from app.config import settings
+from app.db.session import Base, engine
+
+# 创建数据库表
+Base.metadata.create_all(bind=engine)
+
 app = FastAPI(
     title="小报童 API",
     description="小报童(Little Newsboy)后端API服务",
@@ -24,8 +31,8 @@ async def root():
 async def healthcheck():
     return {"status": "ok"}
 
-# 导入和包含API路由
-# 在后续开发中实现各模块的API路由
+# 包含API路由
+app.include_router(api_router, prefix=settings.API_V1_STR)
 
 if __name__ == "__main__":
     import uvicorn
