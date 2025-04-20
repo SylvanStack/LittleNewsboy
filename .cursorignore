@@ -1,0 +1,21 @@
+# 开发工具和IDE相关
+.idea/
+.vscode/
+
+# 文档和指南
+guide/
+docs/
+
+# Python相关
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env/
+
+# 系统文件
+.DS_Store
+Thumbs.db 
