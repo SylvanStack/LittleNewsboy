@@ -17,7 +17,7 @@ from app.db.repositories.source import (
 from app.schemas.source import Source, SourceCreate, SourcesPage, SourceUpdate
 
 router = APIRouter(
-    prefix="/source",
+    prefix="/sources",
     tags=["source"],
 )
 

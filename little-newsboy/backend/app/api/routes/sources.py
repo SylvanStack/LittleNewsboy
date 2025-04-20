@@ -3,8 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from uuid import UUID
 
-from app.core.auth import get_current_user
-from app.db.database import get_db
+from app.api.deps import get_current_user, get_db
 from app.db.models.source import SourceType, Status
 from app.db.models.user import User
 from app.db.repositories.source import (
@@ -42,6 +41,31 @@ def read_sources(
         "page": page,
         "page_size": page_size,
         "pages": (total + page_size - 1) // page_size
+    }
+
+
+@router.get("/list", response_model=SourcesPage)
+def list_sources_with_skip_limit(
+    skip: int = 0,
+    limit: int = 10,
+    search: Optional[str] = None,
+    source_type: Optional[SourceType] = None,
+    status: Optional[Status] = None,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """使用skip和limit参数获取信息源列表"""
+    sources = get_sources(
+        db, current_user.id, skip, limit, search, source_type, status
+    )
+    total = count_sources(db, current_user.id, search, source_type, status)
+    return {
+        "items": sources,
+        "total": total,
+        "page": skip // limit + 1 if limit > 0 else 1,
+        "size": limit,
+        "page_size": limit,
+        "pages": (total + limit - 1) // limit if limit > 0 else 1
     }
 
 

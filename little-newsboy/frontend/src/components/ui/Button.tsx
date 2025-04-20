@@ -1,79 +1,98 @@
-import React, { ButtonHTMLAttributes, ReactNode } from 'react';
+import { ButtonHTMLAttributes, ReactNode } from 'react'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'outline' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
-  children: ReactNode;
-  fullWidth?: boolean;
-  isLoading?: boolean;
+  variant?: 'primary' | 'secondary' | 'accent' | 'outline' | 'danger' | 'ghost';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   icon?: ReactNode;
+  iconPosition?: 'left' | 'right';
+  fullWidth?: boolean;
+  loading?: boolean;
+  children: ReactNode;
 }
 
-const Button: React.FC<ButtonProps> = ({
+const Button = ({
   variant = 'primary',
   size = 'md',
-  children,
-  fullWidth = false,
-  isLoading = false,
   icon,
+  iconPosition = 'left',
+  fullWidth = false,
+  loading = false,
+  children,
   className = '',
   disabled,
-  ...rest
-}) => {
-  // 变体样式映射
+  ...props
+}: ButtonProps) => {
+  const baseStyles = 'inline-flex items-center justify-center font-medium transition-colors rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2';
+  
   const variantStyles = {
-    primary: 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500',
-    secondary: 'bg-gray-600 hover:bg-gray-700 text-white focus:ring-gray-500',
-    success: 'bg-green-600 hover:bg-green-700 text-white focus:ring-green-500',
-    danger: 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500',
-    warning: 'bg-yellow-600 hover:bg-yellow-700 text-white focus:ring-yellow-500',
-    info: 'bg-indigo-600 hover:bg-indigo-700 text-white focus:ring-indigo-500',
-    outline: 'bg-transparent hover:bg-gray-100 text-blue-600 border border-blue-600 focus:ring-blue-500',
-    ghost: 'bg-transparent hover:bg-gray-100 text-gray-600 focus:ring-gray-500',
+    primary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500',
+    secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-500',
+    accent: 'bg-accent-500 text-white hover:bg-orange-600 focus:ring-orange-400',
+    outline: 'border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-primary-500',
+    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
+    ghost: 'text-gray-700 hover:bg-gray-100 focus:ring-gray-500'
   };
 
-  // 尺寸样式映射
   const sizeStyles = {
-    sm: 'px-2.5 py-1.5 text-xs',
-    md: 'px-4 py-2 text-sm',
-    lg: 'px-6 py-3 text-base',
+    xs: 'text-xs px-2 py-1',
+    sm: 'text-sm px-3 py-1.5',
+    md: 'text-sm px-4 py-2',
+    lg: 'text-base px-5 py-2.5'
   };
 
-  // 宽度样式
-  const widthStyle = fullWidth ? 'w-full' : '';
+  const disabledStyles = disabled || loading 
+    ? 'opacity-60 cursor-not-allowed pointer-events-none' 
+    : '';
 
-  // 加载状态
-  const loadingState = isLoading ? 'opacity-80 pointer-events-none' : '';
-
-  // 禁用状态
-  const disabledState = disabled ? 'opacity-60 cursor-not-allowed' : '';
+  const widthStyles = fullWidth ? 'w-full' : '';
   
   return (
     <button
       className={`
-        rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-offset-2
-        transition-colors duration-200 ease-in-out flex items-center justify-center
-        min-w-[80px] p-2
+        ${baseStyles}
         ${variantStyles[variant]}
         ${sizeStyles[size]}
-        ${widthStyle}
-        ${loadingState}
-        ${disabledState}
+        ${disabledStyles}
+        ${widthStyles}
         ${className}
       `}
-      disabled={disabled || isLoading}
-      {...rest}
+      disabled={disabled || loading}
+      {...props}
     >
-      {isLoading && (
-        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      {loading && (
+        <svg 
+          className="animate-spin -ml-1 mr-2 h-4 w-4 text-current" 
+          xmlns="http://www.w3.org/2000/svg" 
+          fill="none" 
+          viewBox="0 0 24 24"
+        >
+          <circle 
+            className="opacity-25" 
+            cx="12" 
+            cy="12" 
+            r="10" 
+            stroke="currentColor" 
+            strokeWidth="4"
+          ></circle>
+          <path 
+            className="opacity-75" 
+            fill="currentColor" 
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
         </svg>
       )}
-      {icon && !isLoading && <span className="mr-2">{icon}</span>}
-      {children}
+      
+      {!loading && icon && iconPosition === 'left' && (
+        <span className="mr-2">{icon}</span>
+      )}
+      
+      <span>{children}</span>
+      
+      {!loading && icon && iconPosition === 'right' && (
+        <span className="ml-2">{icon}</span>
+      )}
     </button>
-  );
-};
+  )
+}
 
-export default Button; 
+export default Button 

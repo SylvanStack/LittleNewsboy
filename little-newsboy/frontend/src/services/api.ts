@@ -53,18 +53,18 @@ export const authAPI = {
 export const sourceAPI = {
   // 获取信息源列表
   getSources: (params?: {
-    skip?: number;
-    limit?: number;
+    page?: number;
+    page_size?: number;
     search?: string;
     source_type?: string;
     status?: string;
   }) => {
-    return apiClient.get('/source', { params });
+    return apiClient.get('/sources', { params });
   },
   
   // 获取单个信息源
   getSource: (id: string) => {
-    return apiClient.get(`/source/${id}`);
+    return apiClient.get(`/sources/${id}`);
   },
   
   // 创建信息源
@@ -78,7 +78,7 @@ export const sourceAPI = {
     filters?: object;
     credentials?: object;
   }) => {
-    return apiClient.post('/source', data);
+    return apiClient.post('/sources', data);
   },
   
   // 更新信息源
@@ -92,17 +92,17 @@ export const sourceAPI = {
     filters?: object;
     credentials?: object;
   }) => {
-    return apiClient.put(`/source/${id}`, data);
+    return apiClient.put(`/sources/${id}`, data);
   },
   
   // 删除信息源
   deleteSource: (id: string) => {
-    return apiClient.delete(`/source/${id}`);
+    return apiClient.delete(`/sources/${id}`);
   },
   
   // 刷新信息源
   refreshSource: (id: string) => {
-    return apiClient.post(`/source/${id}/refresh`);
+    return apiClient.post(`/sources/${id}/refresh`);
   }
 };
 

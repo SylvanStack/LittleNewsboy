@@ -13,6 +13,10 @@ const Login = lazy(() => import('./pages/Auth/Login'))
 const Register = lazy(() => import('./pages/Auth/Register'))
 const Profile = lazy(() => import('./pages/Profile'))
 const Settings = lazy(() => import('./pages/Settings'))
+const Reports = lazy(() => import('./pages/Reports'))
+const ReportDetail = lazy(() => import('./pages/Reports/ReportDetail'))
+const Notifications = lazy(() => import('./pages/Notifications'))
+const Analytics = lazy(() => import('./pages/Analytics'))
 
 // 受保护的路由组件
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
@@ -51,6 +55,10 @@ function App() {
           <Route path="ai-settings" element={<AISettings />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="reports" element={<Reports />} />
+          <Route path="reports/:id" element={<ReportDetail />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="analytics" element={<Analytics />} />
         </Route>
       </Routes>
     </Suspense>

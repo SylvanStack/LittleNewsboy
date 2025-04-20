@@ -68,8 +68,8 @@ const SourceManagement: React.FC = () => {
       const { search, type, status } = filters;
       
       const params: Record<string, any> = {
-        skip: (current - 1) * pageSize,
-        limit: pageSize,
+        page: current,
+        page_size: pageSize,
       };
       
       if (search) params.search = search;

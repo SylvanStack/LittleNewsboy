@@ -499,3 +499,22 @@
 ### 修改的文件
 - little-newsboy/backend/app/db/repositories/source.py
 - little-newsboy/backend/app/schemas/source.py 
+
+## 2025年5月11日
+
+### 会话总结
+- **主要目的**：修复前端API请求返回404的问题
+- **完成的主要任务**：
+  - 诊断并解决了信息源列表API请求返回404 Not Found的错误
+  - 修正了前端API调用路径，将'/sources/list'改为'/sources'
+  - 更新了API参数命名，将skip/limit改为page/page_size，与后端接口保持一致
+- **关键决策和解决方案**：
+  - 通过分析前后端代码发现了路由不匹配问题
+  - 确认了后端提供了两个获取信息源的接口：一个使用page/page_size，另一个使用skip/limit
+  - 选择修改前端代码以适配后端API，避免后端代码变更带来的风险
+- **使用的技术栈**：
+  - React、TypeScript、FastAPI
+- **修改的文件**：
+  - `little-newsboy/frontend/src/services/api.ts`：修改API调用路径和参数类型
+  - `little-newsboy/frontend/src/pages/SourceManagement/index.tsx`：更新参数命名
+  - `UPDATE_LOG.md`：记录本次修复内容 
