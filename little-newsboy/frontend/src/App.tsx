@@ -7,6 +7,7 @@ import { useAuth } from './contexts/AuthContext'
 const Home = lazy(() => import('./pages/Home'))
 const SourceManagement = lazy(() => import('./pages/SourceManagement'))
 const KnowledgeSummary = lazy(() => import('./pages/KnowledgeSummary'))
+const SummaryDetail = lazy(() => import('./pages/KnowledgeSummary/SummaryDetail'))
 const AISettings = lazy(() => import('./pages/AISettings'))
 const Login = lazy(() => import('./pages/Auth/Login'))
 const Register = lazy(() => import('./pages/Auth/Register'))
@@ -46,6 +47,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="sources" element={<SourceManagement />} />
           <Route path="knowledge" element={<KnowledgeSummary />} />
+          <Route path="knowledge/:id" element={<SummaryDetail />} />
           <Route path="ai-settings" element={<AISettings />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />

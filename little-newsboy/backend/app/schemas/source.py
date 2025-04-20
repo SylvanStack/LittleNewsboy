@@ -52,7 +52,7 @@ class Source(SourceBase):
     updated_at: Optional[datetime] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # 用于分页响应
 class SourcesPage(BaseModel):
@@ -64,8 +64,8 @@ class SourcesPage(BaseModel):
     total_pages: Optional[int] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True
         # 允许额外字段
         extra = "allow"
         # 允许字段别名
-        allow_population_by_field_name = True 
+        populate_by_name = True 

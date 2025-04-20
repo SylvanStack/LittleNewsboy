@@ -106,4 +106,123 @@ export const sourceAPI = {
   }
 };
 
+// 知识摘要管理API
+export const summaryAPI = {
+  // 获取摘要列表
+  getSummaries: (params?: {
+    page?: number;
+    page_size?: number;
+    sort_field?: string;
+    sort_order?: string;
+    tag?: string;
+    search?: string;
+    is_archived?: boolean;
+    is_important?: boolean;
+    source_id?: string;
+  }) => {
+    return apiClient.get('/summaries', { params });
+  },
+  
+  // 获取单个摘要详情
+  getSummary: (id: string) => {
+    return apiClient.get(`/summaries/${id}`);
+  },
+  
+  // 创建新摘要
+  createSummary: (data: {
+    title: string;
+    content: string;
+    key_points: string[];
+    source_ids: string[];
+    tags: string[];
+  }) => {
+    return apiClient.post('/summaries', data);
+  },
+  
+  // 更新摘要
+  updateSummary: (id: string, data: {
+    title?: string;
+    content?: string;
+    key_points?: string[];
+    source_ids?: string[];
+    tags?: string[];
+    is_archived?: boolean;
+    is_important?: boolean;
+  }) => {
+    return apiClient.put(`/summaries/${id}`, data);
+  },
+  
+  // 删除摘要
+  deleteSummary: (id: string) => {
+    return apiClient.delete(`/summaries/${id}`);
+  },
+  
+  // 切换摘要归档状态
+  toggleArchive: (id: string) => {
+    return apiClient.post(`/summaries/${id}/archive`);
+  },
+  
+  // 切换摘要重要标记
+  toggleImportant: (id: string) => {
+    return apiClient.post(`/summaries/${id}/important`);
+  },
+  
+  // 从指定信息源生成摘要
+  generateSummary: (data: {
+    source_ids: string[];
+    template_id?: string;
+    parameters?: {
+      max_length?: number;
+      focus_points?: string[];
+      format?: string;
+      tags?: string[];
+    };
+  }) => {
+    return apiClient.post('/summaries/generate', data);
+  },
+  
+  // 获取摘要模板列表
+  getTemplates: () => {
+    return apiClient.get('/summaries/templates');
+  },
+  
+  // 获取单个摘要模板
+  getTemplate: (id: string) => {
+    return apiClient.get(`/summaries/templates/${id}`);
+  },
+  
+  // 创建摘要模板
+  createTemplate: (data: {
+    name: string;
+    description: string;
+    parameters: {
+      max_length?: number;
+      focus_points?: string[];
+      format?: string;
+      tags?: string[];
+    };
+  }) => {
+    return apiClient.post('/summaries/templates', data);
+  },
+  
+  // 更新摘要模板
+  updateTemplate: (id: string, data: {
+    name?: string;
+    description?: string;
+    parameters?: {
+      max_length?: number;
+      focus_points?: string[];
+      format?: string;
+      tags?: string[];
+    };
+  }) => {
+    return apiClient.put(`/summaries/templates/${id}`, data);
+  },
+  
+  // 删除摘要模板
+  deleteTemplate: (id: string) => {
+    return apiClient.delete(`/summaries/templates/${id}`);
+  }
+};
+
 export default apiClient; 

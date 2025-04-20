@@ -24,15 +24,20 @@ class BaseRepository(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return db.query(self.model).filter(self.model.id == id).first()
 
     def get_multi(
-        self, db: Session, *, skip: int = 0, limit: int = 100
+        self, db: Session, *, skip: int = 0, limit: int = 100, user_id: Optional[str] = None
     ) -> List[ModelType]:
         """获取多个实体"""
-        return db.query(self.model).offset(skip).limit(limit).all()
+        query = db.query(self.model)
+        if user_id and hasattr(self.model, "user_id"):
+            query = query.filter(self.model.user_id == user_id)
+        return query.offset(skip).limit(limit).all()
 
-    def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
+    def create(self, db: Session, *, obj_in: CreateSchemaType, user_id: Optional[str] = None) -> ModelType:
         """创建新实体"""
         obj_in_data = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in_data)
+        if user_id and hasattr(db_obj, "user_id"):
+            db_obj.user_id = user_id
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
